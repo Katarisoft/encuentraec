@@ -34,7 +34,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('agregar_lugar'.tr)),
+      appBar: AppBar(title: const Text('Agregar lugar')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -43,31 +43,22 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             children: [
               TextFormField(
                 controller: _nombreController,
-                decoration: InputDecoration(
-                    labelText: 'nombre_lugar'.tr,
-                    hintText: 'Ej. Parque El Ejido'),
-                validator: (valor) => (valor == null || valor.trim().isEmpty)
-                    ? 'El nombre es obligatorio'
-                    : null,
+                decoration: const InputDecoration(labelText: 'Nombre del lugar', hintText: 'Ej. Parque El Ejido'),
+                validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'El nombre es obligatorio' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _categoriaController,
-                decoration: InputDecoration(
-                    labelText: 'categoria'.tr, hintText: 'Ej. Cafeterías'),
-                validator: (valor) => (valor == null || valor.trim().isEmpty)
-                    ? 'La categoría es obligatoria'
-                    : null,
+                decoration: const InputDecoration(labelText: 'Categoría', hintText: 'Ej. Cafeterías'),
+                validator: (valor) => (valor == null || valor.trim().isEmpty) ? 'La categoría es obligatoria' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'descripcion'.tr),
+                decoration: const InputDecoration(labelText: 'Descripción'),
                 maxLines: 3,
                 validator: (valor) =>
-                    (valor == null || valor.trim().length < 10)
-                        ? 'Escribe al menos 10 caracteres'
-                        : null,
+                    (valor == null || valor.trim().length < 10) ? 'Escribe al menos 10 caracteres' : null,
               ),
               const SizedBox(height: 24),
               ElevatedButton(
@@ -82,10 +73,10 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                       lng: -78.4859,
                     ));
                     Get.back();
-                    Get.snackbar('lugar_agregado'.tr, 'lugar_agregado_msg'.tr);
+                    Get.snackbar('Lugar agregado', 'Ya aparece en Inicio');
                   }
                 },
-                child: Text('guardar'.tr),
+                child: const Text('Guardar'),
               ),
             ],
           ),
