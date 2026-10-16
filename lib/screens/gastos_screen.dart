@@ -36,7 +36,8 @@ class GastosScreen extends GetView<GastosController> {
   Widget _buildGastos(BuildContext context, AuthController auth) {
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text('${'gastos'.tr} (${controller.totalEnServidor.value})')),
+        title: Obx(
+            () => Text('${'gastos'.tr} (${controller.totalEnServidor.value})')),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -47,25 +48,41 @@ class GastosScreen extends GetView<GastosController> {
             onSelected: (valor) {
               if (valor == 'salir') auth.cerrarSesion();
               if (valor == 'invalidar') auth.invalidarTokenParaPruebas();
-              if (valor == 'password') Get.to(() => const CambiarPasswordScreen());
+              if (valor == 'password')
+                Get.to(() => const CambiarPasswordScreen());
               // Solo práctica (Sesión 10, Paso 2): provocan errores a propósito.
-              if (valor == 'error_pantalla') Get.to(() => const PantallaConFallo());
+              if (valor == 'error_pantalla')
+                Get.to(() => const PantallaConFallo());
               if (valor == 'error_async') {
-                Future<void>.delayed(Duration.zero, () => throw StateError('Fallo asíncrono provocado a propósito'));
+                Future<void>.delayed(
+                    Duration.zero,
+                    () => throw StateError(
+                        'Fallo asíncrono provocado a propósito'));
               }
               // Por qué: pantalla opcional con las licencias de los paquetes que usa la app.
               // TODO(sesion-10) OPCIONAL Paso 10: descomenta la línea de abajo (abrir «Acerca de»).
-              // if (valor == 'acerca') showLicensePage(context: context, applicationName: 'ExploraEC', applicationVersion: '1.0.0');
+              if (valor == 'acerca')
+                showLicensePage(
+                    context: context,
+                    applicationName: 'ExploraEC',
+                    applicationVersion: '1.0.0');
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'password', child: Text('Cambiar contraseña')),
+              const PopupMenuItem(
+                  value: 'password', child: Text('Cambiar contraseña')),
               const PopupMenuItem(value: 'salir', child: Text('Cerrar sesión')),
               // TODO(sesion-10) OPCIONAL Paso 10: descomenta la línea de abajo (opción del menú).
-              // const PopupMenuItem(value: 'acerca', child: Text('Acerca de')),
+              const PopupMenuItem(value: 'acerca', child: Text('Acerca de')),
               if (kDebugMode) ...const [
-                PopupMenuItem(value: 'invalidar', child: Text('Invalidar token (solo práctica)')),
-                PopupMenuItem(value: 'error_pantalla', child: Text('Error de pantalla (solo práctica)')),
-                PopupMenuItem(value: 'error_async', child: Text('Error asíncrono (solo práctica)')),
+                PopupMenuItem(
+                    value: 'invalidar',
+                    child: Text('Invalidar token (solo práctica)')),
+                PopupMenuItem(
+                    value: 'error_pantalla',
+                    child: Text('Error de pantalla (solo práctica)')),
+                PopupMenuItem(
+                    value: 'error_async',
+                    child: Text('Error asíncrono (solo práctica)')),
               ],
             ],
           ),
@@ -87,7 +104,8 @@ class GastosScreen extends GetView<GastosController> {
           );
         }
         if (controller.gastos.isEmpty) {
-          return const EmptyView(mensaje: 'Aún no registras gastos en este viaje');
+          return const EmptyView(
+              mensaje: 'Aún no registras gastos en este viaje');
         }
         return Column(
           children: [
@@ -164,7 +182,8 @@ class GastosScreen extends GetView<GastosController> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(g.monto.toStringAsFixed(2), style: Theme.of(context).textTheme.titleMedium),
+              Text(g.monto.toStringAsFixed(2),
+                  style: Theme.of(context).textTheme.titleMedium),
               IconButton(
                 icon: const Icon(Icons.delete_outline),
                 tooltip: 'Eliminar',
@@ -186,8 +205,12 @@ class GastosScreen extends GetView<GastosController> {
         title: Text('¿Eliminar "${g.descripcion}"?'),
         content: const Text('Esta acción no se puede deshacer.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogo, false), child: const Text('Cancelar')),
-          FilledButton(onPressed: () => Navigator.pop(dialogo, true), child: const Text('Eliminar')),
+          TextButton(
+              onPressed: () => Navigator.pop(dialogo, false),
+              child: const Text('Cancelar')),
+          FilledButton(
+              onPressed: () => Navigator.pop(dialogo, true),
+              child: const Text('Eliminar')),
         ],
       ),
     );
