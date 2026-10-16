@@ -21,7 +21,8 @@ class ReporteErrores {
   /// `Bearer` y tokens JWT (tres partes separadas por puntos).
   static String limpiar(String texto) => texto
       .replaceAll(RegExp(r'Bearer\s+[A-Za-z0-9\-._~+/]+=*'), 'Bearer ***')
-      .replaceAll(RegExp(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*'), '***');
+      .replaceAll(
+          RegExp(r'eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*'), '***');
 
   /// Guarda el error ya limpio. En una app real, aquí se enviaría a un servicio
   /// de monitoreo (por ejemplo, Crashlytics o Sentry) — con el mensaje limpio.
@@ -38,7 +39,8 @@ class ReporteErrores {
     // mostrar (la app aún no tiene navegación), simplemente se omite.
     try {
       if (Get.key.currentState == null) return;
-      Get.snackbar('Algo salió mal', 'Ya registramos el problema. Puedes seguir usando la app.');
+      Get.snackbar('Algo salió mal',
+          'Ya registramos el problema. Puedes seguir usando la app.');
     } catch (_) {}
   }
 
@@ -49,15 +51,15 @@ class ReporteErrores {
     // solo deja una línea en la consola. Con esto, los dos terminan en
     // `registrar`, y la persona ve una vista amistosa en vez de una traza.
     // TODO(sesion-10) Paso 2: descomenta las 10 líneas de abajo (capturar errores no controlados).
-    // FlutterError.onError = (detalles) {
-    //   FlutterError.presentError(detalles);
-    //   registrar(detalles.exception, detalles.stack);
-    // };
-    // PlatformDispatcher.instance.onError = (error, pila) {
-    //   registrar(error, pila);
-    //   avisar();
-    //   return true;
-    // };
-    // ErrorWidget.builder = (detalles) => const ErrorPantallaView();
+    FlutterError.onError = (detalles) {
+      FlutterError.presentError(detalles);
+      registrar(detalles.exception, detalles.stack);
+    };
+    PlatformDispatcher.instance.onError = (error, pila) {
+      registrar(error, pila);
+      avisar();
+      return true;
+    };
+    ErrorWidget.builder = (detalles) => const ErrorPantallaView();
   }
 }
