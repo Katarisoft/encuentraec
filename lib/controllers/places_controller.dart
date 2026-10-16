@@ -40,7 +40,6 @@ class PlacesController extends GetxController {
     _observarErrores();
     super.onInit();
     cargarLugares();
-    cargarPosicion();
   }
 
   /// Simula uno de los 3 estados a propósito, solo para esta práctica —
@@ -60,7 +59,6 @@ class PlacesController extends GetxController {
         forzarVacio: _modoDebugVacio,
       );
       lugares.assignAll(resultado);
-      ordenarPorCercania();
       estado.value = EstadoCarga.exito;
     } catch (e) {
       mensajeError.value = '$e';
@@ -74,20 +72,12 @@ class PlacesController extends GetxController {
   Future<void> cargarPosicion({bool forzar = false}) async {
     if (posicion.value != null && !forzar) {
       estadoPosicion.value = EstadoCarga.exito;
-
-      // Por si los lugares se cargaron después de una posición previa.
-      ordenarPorCercania();
       return;
     }
-
     estadoPosicion.value = EstadoCarga.cargando;
-
     try {
       posicion.value = await LocationService.obtenerPosicionActual();
       estadoPosicion.value = EstadoCarga.exito;
-
-      // Ya hay posición: reordenar desde el más cercano.
-      ordenarPorCercania();
     } on LocationException catch (e) {
       mensajeErrorPosicion.value = e.mensaje;
       estadoPosicion.value = EstadoCarga.error;
@@ -127,42 +117,5 @@ class PlacesController extends GetxController {
   double? distanciaA(Place lugar) {
     final pos = posicion.value;
     return pos == null ? null : distanciaAPlaceEnMetros(pos, lugar);
-  }
-
-  void ordenarPorCercania() {
-    // Sin posición aún, no hay distancia real que usar para ordenar.
-    // Conservamos el orden en el que llegaron los lugares.
-    if (posicion.value == null) {
-      return;
-    }
-
-    // sort() modifica la lista, por eso trabajamos sobre una copia.
-    final ordenados = lugares.toList();
-
-    ordenados.sort((a, b) {
-      final metrosA = distanciaA(a);
-      final metrosB = distanciaA(b);
-
-      // Ambos no tienen distancia calculable:
-      // se consideran iguales y permanecen en su posición relativa.
-      if (metrosA == null && metrosB == null) {
-        return 0;
-      }
-
-      // El que no tiene distancia se mueve al final.
-      if (metrosA == null) {
-        return 1;
-      }
-
-      if (metrosB == null) {
-        return -1;
-      }
-
-      // Menos metros significa que debe aparecer antes.
-      return metrosA.compareTo(metrosB);
-    });
-
-    // Reemplaza la RxList y notifica a los Obx que muestran la lista.
-    lugares.assignAll(ordenados);
   }
 }
