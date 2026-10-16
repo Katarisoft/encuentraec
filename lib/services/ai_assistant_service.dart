@@ -10,7 +10,7 @@ import 'api_client.dart';
 /// ninguna clave de IA: solo la dirección del proxy.
 const String kAiBackendUrl = String.fromEnvironment(
   'LLM_BACKEND_URL',
-  defaultValue: 'http://localhost:3000',
+  defaultValue: 'http://loclahost:3000',
 );
 
 /// Acción que el asistente propone (por ahora, registrar un gasto). La app
