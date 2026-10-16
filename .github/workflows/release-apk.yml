@@ -56,7 +56,7 @@ jobs:
         run: flutter test
 
       - name: Compilar el APK de release
-        run: flutter build apk --release --dart-define=API_BASE_URL=${{ vars.API_BASE_URL || 'http://localhost:8000' }}
+        run: flutter build apk --release --dart-define=API_BASE_URL=${{ vars.API_BASE_URL || 'http://10.0.2.2:8000' }}
 
       - name: Guardar el APK como artefacto de la ejecución
         uses: actions/upload-artifact@v7

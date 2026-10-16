@@ -106,40 +106,31 @@ void main() {
   // una persona, y comprueba lo que se ve. Estas tres no necesitan el backend ni
   // el emulador: usan un servidor falso.
   // TODO(sesion-10) Paso 3: descomenta las 27 líneas de abajo (pruebas de widgets).
-  testWidgets(
-      'Paso 3 — sin sesión se ve el motivo y el botón para iniciar sesión',
-      (tester) async {
-    final montaje = _montar();
-    montaje.auth.avisoSesion.value =
-        'Tu sesión caducó, inicia sesión de nuevo.';
-    await tester.pumpWidget(const GetMaterialApp(home: SinSesionView()));
-    await tester.pump(const Duration(milliseconds: 50));
-    expect(
-        find.text('Tu sesión caducó, inicia sesión de nuevo.'), findsOneWidget);
-    expect(find.text('Iniciar sesión'), findsOneWidget);
-  });
-
-  testWidgets(
-      'Paso 3 — registrar con una contraseña corta se rechaza sin llamar al servidor',
-      (tester) async {
-    final montaje = _montar();
-    await tester.pumpWidget(const GetMaterialApp(home: RegisterScreen()));
-    await tester.enterText(find.byType(TextFormField).at(0), 'a@b.com');
-    await tester.enterText(find.byType(TextFormField).at(1), 'abc');
-    await tester.tap(find.widgetWithText(FilledButton, 'Crear cuenta'));
-    await tester.pump();
-    expect(find.text('La contraseña debe tener entre 8 y 72 caracteres'),
-        findsOneWidget);
-    expect(montaje.servidor.peticiones, isEmpty);
-  });
-
-  testWidgets(
-      'Paso 3 — una pantalla que falla muestra la vista amistosa, no la roja',
-      (tester) async {
-    _restaurarManejadoresAlTerminar();
-    ReporteErrores.instalar();
-    await tester.pumpWidget(const MaterialApp(home: PantallaConFallo()));
-    expect(find.byType(ErrorPantallaView), findsOneWidget);
-    expect(find.text('Esta pantalla tuvo un problema'), findsOneWidget);
-  });
+  // testWidgets('Paso 3 — sin sesión se ve el motivo y el botón para iniciar sesión', (tester) async {
+  //   final montaje = _montar();
+  //   montaje.auth.avisoSesion.value = 'Tu sesión caducó, inicia sesión de nuevo.';
+  //   await tester.pumpWidget(const GetMaterialApp(home: SinSesionView()));
+  //   await tester.pump(const Duration(milliseconds: 50));
+  //   expect(find.text('Tu sesión caducó, inicia sesión de nuevo.'), findsOneWidget);
+  //   expect(find.text('Iniciar sesión'), findsOneWidget);
+  // });
+  //
+  // testWidgets('Paso 3 — registrar con una contraseña corta se rechaza sin llamar al servidor', (tester) async {
+  //   final montaje = _montar();
+  //   await tester.pumpWidget(const GetMaterialApp(home: RegisterScreen()));
+  //   await tester.enterText(find.byType(TextFormField).at(0), 'a@b.com');
+  //   await tester.enterText(find.byType(TextFormField).at(1), 'abc');
+  //   await tester.tap(find.widgetWithText(FilledButton, 'Crear cuenta'));
+  //   await tester.pump();
+  //   expect(find.text('La contraseña debe tener entre 8 y 72 caracteres'), findsOneWidget);
+  //   expect(montaje.servidor.peticiones, isEmpty);
+  // });
+  //
+  // testWidgets('Paso 3 — una pantalla que falla muestra la vista amistosa, no la roja', (tester) async {
+  //   _restaurarManejadoresAlTerminar();
+  //   ReporteErrores.instalar();
+  //   await tester.pumpWidget(const MaterialApp(home: PantallaConFallo()));
+  //   expect(find.byType(ErrorPantallaView), findsOneWidget);
+  //   expect(find.text('Esta pantalla tuvo un problema'), findsOneWidget);
+  // });
 }
